@@ -7,6 +7,8 @@ const results = document.getElementById("results");
 const shareText = document.getElementById("shareText");
 const tipButtons = [...document.querySelectorAll(".tip-btn")];
 const customTipInput = document.getElementById("customTip");
+const copySummaryBtn = document.getElementById("copySummaryBtn");
+const copyFeedback = document.getElementById("copyFeedback");
 
 let selectedTip = null;
 const currencyFormatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
@@ -76,11 +78,13 @@ function renderSplit() {
   if (!subtotal || subtotal <= 0) {
     results.innerHTML = '<p class="note">Please enter a subtotal greater than $0.00.</p>';
     shareText.value = "";
+  copyFeedback.textContent = "";
     return;
   }
   if (people.length === 0) {
     results.innerHTML = '<p class="note">Please add at least one person name.</p>';
     shareText.value = "";
+  copyFeedback.textContent = "";
     return;
   }
 
@@ -118,6 +122,28 @@ function setTipSelection(value) {
   renderSplit();
 }
 
+
+function showCopyFeedback(message) {
+  copyFeedback.textContent = message;
+  setTimeout(() => {
+    if (copyFeedback.textContent === message) copyFeedback.textContent = "";
+  }, 1500);
+}
+
+async function copySummary() {
+  const text = shareText.value.trim();
+  if (!text) {
+    showCopyFeedback("Nothing to copy yet.");
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    showCopyFeedback("Copied!");
+  } catch {
+    showCopyFeedback("Copy failed. Please copy manually.");
+  }
+}
+
 function resetApp() {
   totalAmountInput.value = "";
   peopleList.innerHTML = "";
@@ -129,6 +155,7 @@ function resetApp() {
   customTipInput.value = "";
   results.innerHTML = '<p class="note">Enter subtotal, tip (optional), and names, then tap Calculate split.</p>';
   shareText.value = "";
+  copyFeedback.textContent = "";
 }
 
 addPersonBtn.addEventListener("click", () => addPerson());
@@ -137,5 +164,6 @@ resetBtn.addEventListener("click", resetApp);
 totalAmountInput.addEventListener("input", renderSplit);
 customTipInput.addEventListener("input", renderSplit);
 tipButtons.forEach((btn) => btn.addEventListener("click", () => setTipSelection(btn.dataset.tip)));
+copySummaryBtn.addEventListener("click", copySummary);
 
 resetApp();
