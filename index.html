@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PaySplit helps you split a bill quickly and fairly with a clean mobile-friendly interface." />
+    <title>PaySplit</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>PaySplit</h1>
+        <p class="subtitle">Fast, fair bill splitting for friends and groups.</p>
+        <p class="instructions">Enter the subtotal, choose a tip, add people, then tap <strong>Calculate split</strong>.</p>
+      </header>
+
+      <label for="totalAmount">Subtotal amount</label>
+      <input id="totalAmount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" aria-describedby="amountHint" />
+      <p id="amountHint" class="hint">Use dollars and cents (example: 84.50)</p>
+
+      <section class="tip-section" aria-label="Tip selection">
+        <h2>Tip</h2>
+        <div class="tip-buttons">
+          <button type="button" class="tip-btn" data-tip="10">10%</button>
+          <button type="button" class="tip-btn" data-tip="15">15%</button>
+          <button type="button" class="tip-btn" data-tip="20">20%</button>
+          <button type="button" class="tip-btn" data-tip="custom">Custom</button>
+        </div>
+        <input id="customTip" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Custom tip %" class="hidden" />
+      </section>
+
+      <section class="people-section">
+        <div class="section-header">
+          <h2>People</h2>
+          <button id="addPersonBtn" type="button">+ Add person</button>
+        </div>
+        <div id="peopleList" class="people-list"></div>
+        <p class="hint">Optional extras let you add personal charges (like a drink or dessert).</p>
+      </section>
+
+      <div class="actions">
+        <button id="splitBtn" class="split-btn" type="button">Calculate split</button>
+        <button id="resetBtn" class="reset-btn" type="button">Reset</button>
+      </div>
+
+      <section id="results" class="results" aria-live="polite"></section>
+
+      <label for="shareText">Copy/share summary</label>
+      <textarea id="shareText" class="share-text" readonly placeholder="Share-ready summary appears here after you calculate."></textarea>
+    </main>
+    <footer class="app-footer">
+      <p><strong>PaySplit</strong></p>
+      <p>Simple bill splitting, done right.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
